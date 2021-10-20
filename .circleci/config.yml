@@ -5,9 +5,6 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   build:
     docker:
       - image: python:3.6.3-jessie
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     working_directory: /tmp
     steps:
       - run:
