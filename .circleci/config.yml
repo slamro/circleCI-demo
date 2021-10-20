@@ -3,6 +3,8 @@ orbs:
   python: circleci/python@1.4.0
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   build:
+    docker:
+      - image: python:3.6.3-jessie
     working_directory: /tmp
     steps:
       - run:
