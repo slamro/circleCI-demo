@@ -1,5 +1,18 @@
 version: 2.1
+orbs:
+  python: circleci/python@1.4.0
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
+  publish:
+    executor: python/default
+    steps:
+      - checkout
+      - python/install-packages:
+          args: pytest
+          pkg-manager: pipenv
+      - run:
+          command: |
+            pipenv run pytest --version
+          name: Test it
   one: # This is our first job.
     docker: # it uses the docker executor
       - image: circleci/ruby:2.4.1 # specifically, a docker image with ruby 2.4.1
@@ -21,10 +34,13 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout
       - run: echo "A more familiar hi" # We run a similar echo command to above.
       - run: sleep 15 # and then sleep for 15 seconds.
+# orbs:
+#   python: circleci/python@1.4.0
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
   version: 2
   one_and_two: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
+      - publish
       - one
       - two
